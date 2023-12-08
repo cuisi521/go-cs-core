@@ -1,4 +1,4 @@
-module github.com/cuisi521/go-cs-orm
+module github.com/cuisi521/go-cs-core
 
 go 1.21
 

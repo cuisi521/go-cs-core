@@ -1,0 +1,73 @@
+@startuml
+namespace cdb {
+    class Core << (S,Aquamarine) >> {
+        - xeDb *xorm.Engine
+        - wb *WhereBuild
+        - session *xorm.Session
+
+        + Role string
+
+        + NewCore() *Core
+        + Fields(args ...string) *Core
+        + Where(query <font color=blue>interface</font>{}, args ...<font color=blue>interface</font>{}) *Core
+        + Get(out <font color=blue>interface</font>{}) (bool, error)
+        + Find(out <font color=blue>interface</font>{}) error
+        + Exist(query <font color=blue>interface</font>{}) (bool, error)
+        + Iterate(bean <font color=blue>interface</font>{}, iterFunc xorm.IterFunc) error
+        + Count(bean <font color=blue>interface</font>{}) (int64, error)
+        + Select(feilds string) *Core
+        + InnerJoin(tablename string, condition string, args ...<font color=blue>interface</font>{}) *Core
+        + LeftJoin(tablename string, condition string, args ...<font color=blue>interface</font>{}) *Core
+        + RightJoin(tablename string, condition string, args ...<font color=blue>interface</font>{}) *Core
+        + Sql(query <font color=blue>interface</font>{}, args ...<font color=blue>interface</font>{}) *Core
+        + Table(tableName string) *Core
+        + Insert(d ...<font color=blue>interface</font>{}) (int64, error)
+        + Update(table string, d <font color=blue>interface</font>{}, condition <font color=blue>interface</font>{}) (int64, error)
+        + Entity(table string) *Entity
+
+    }
+    class DbCnf << (S,Aquamarine) >> {
+        + CnfName string
+        + Driver string
+        + Link string
+        + ShowSql bool
+        + LogLevel int
+        + ConnMaxLifeTime time.Duration
+        + MaxIdleConn int
+        + MaxOpenConn int
+        + Role string
+
+    }
+    interface Enginer  {
+        + Fields(args ...string) *Core
+        + Where(query <font color=blue>interface</font>{}, args ...<font color=blue>interface</font>{}) *Core
+        + Select(field string) *Core
+        + Get(out <font color=blue>interface</font>{}) (bool, error)
+        + Exist(query <font color=blue>interface</font>{}) (bool, error)
+        + Find(out <font color=blue>interface</font>{}) error
+        + Iterate(bean <font color=blue>interface</font>{}, iterFunc xorm.IterFunc) error
+        + Count(bean <font color=blue>interface</font>{}) (int64, error)
+        + InnerJoin(tablename string, condition string, args ...<font color=blue>interface</font>{}) *Core
+        + LeftJoin(tablename string, condition string, args ...<font color=blue>interface</font>{}) *Core
+        + RightJoin(tablename string, condition string, args ...<font color=blue>interface</font>{}) *Core
+        + Insert(d ...<font color=blue>interface</font>{}) (int64, error)
+        + Sql(query <font color=blue>interface</font>{}, args ...<font color=blue>interface</font>{}) *Core
+        + Table(tableName string) *Core
+
+    }
+    class Entity << (S,Aquamarine) >> {
+        + Query(sql string, args ...<font color=blue>interface</font>{}) 
+        + Insert(d ...<font color=blue>interface</font>{}) (int64, error)
+        + Update(table string, d <font color=blue>interface</font>{}, condition <font color=blue>interface</font>{}) (int64, error)
+
+    }
+    class WhereBuild << (S,Aquamarine) >> {
+        + Query <font color=blue>interface</font>{}
+        + Args []<font color=blue>interface</font>{}
+
+    }
+}
+
+"cdb.Enginer" <|-- "cdb.Core"
+
+@enduml

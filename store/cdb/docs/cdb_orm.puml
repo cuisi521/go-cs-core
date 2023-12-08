@@ -1,0 +1,52 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface Enginer
+Enginer <|-- Core
+Core --> DbCnf
+
+interface Enginer{
+    +Table(tableName string):*Core
+    +Fields(args ...string):*Core
+	+Where(query interface{}, args ...interface{}):*Core
+	+Select(field string):*Core
+	+Get(out interface{}):(bool, error)
+	+Exist(query interface{}):(bool, error)
+	+Find(out interface{}):error
+	+Iterate(bean interface{}, iterFunc xorm.IterFunc):error
+	+Count(bean interface{}):(total int64, err error)
+	+InnerJoin(tablename string, condition string, args ...interface{}):*Core
+	+LeftJoin(tablename string, condition string, args ...interface{}):*Core
+	+RightJoin(tablename string, condition string, args ...interface{}):*Core
+	+Insert(d ...interface{}):(int64, error)
+	+Sql(query interface{}, args ...interface{}):*Core
+}
+
+class Core {
+    +Table(tableName string):*Core
+    +Fields(args ...string):*Core
+    +Where(query interface{}, args ...interface{}):*Core
+    +Select(field string):*Core
+    +Get(out interface{}):(bool, error)
+    +Exist(query interface{}):(bool, error)
+    +Find(out interface{}):error
+    +Iterate(bean interface{}, iterFunc xorm.IterFunc):error
+    +Count(bean interface{}):(total int64, err error)
+    +InnerJoin(tablename string, condition string, args ...interface{}):*Core
+    +LeftJoin(tablename string, condition string, args ...interface{}):*Core
+    +RightJoin(tablename string, condition string, args ...interface{}):*Core
+    +Insert(d ...interface{}):(int64, error)
+    +Sql(query interface{}, args ...interface{}):*Core
+}
+
+class DbCnf {
+	+CnfName:string
+	+Driver:string
+	+Link:string
+	+ShowSql:bool
+	+LogLevel:int
+	+ConnMaxLifeTime:time.Duration
+	+MaxIdleConn:int
+	+MaxOpenConn:int
+}
+@enduml

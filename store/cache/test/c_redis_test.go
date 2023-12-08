@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"go-cs-orm/store/cache"
+	"github.com/cuisi521/go-cs-core/store/cache"
 )
 
 type User struct {

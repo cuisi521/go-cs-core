@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"go-cs-orm/tool/util/conv"
+	"github.com/cuisi521/go-cs-core/tool/util/conv"
 )
 
 func TestConvert(t *testing.T) {

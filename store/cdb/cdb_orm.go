@@ -9,8 +9,8 @@ import (
 
 	"github.com/xormplus/xorm"
 
-	"go-cs-orm/sys/clog"
-	"go-cs-orm/tool/clb/rotation"
+	"github.com/cuisi521/go-cs-core/sys/clog"
+	"github.com/cuisi521/go-cs-core/tool/clb/rotation"
 )
 
 const (

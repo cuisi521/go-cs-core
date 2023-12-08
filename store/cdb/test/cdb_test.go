@@ -7,7 +7,7 @@ package test
 import (
 	"testing"
 
-	"go-cs-orm/store/cdb"
+	"github.com/cuisi521/go-cs-core/store/cdb"
 )
 
 func install() {

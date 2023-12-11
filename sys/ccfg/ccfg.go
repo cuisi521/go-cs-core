@@ -5,25 +5,41 @@
 package ccfg
 
 import (
-	"fmt"
-
+	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
-type Config struct {
-	cfgName string
-	cfgType string
-	cfgPath string
+var (
+	defaultDir  = "./manifest/config/setting.yaml"
+	defaultName = "setting.yaml"
+	defaultType = "yaml"
+)
+
+type CnfYaml struct {
+	cfgName  string
+	cfgType  string
+	cfgPath  string
+	CallBack func(fsnotify.Event)
 }
 
-var c *Config
+var c *CnfYaml
 
 func init() {
 	c = New()
+
+	// 设置默认路径
+	c.SetCfgPath(defaultDir)
+
+	// 默认文件名
+	c.SetCfgName(defaultName)
+
+	// 默认文件类型
+	c.SetCfgType(defaultType)
+
 }
 
-func New() *Config {
-	c := new(Config)
+func New() *CnfYaml {
+	c := new(CnfYaml)
 	return c
 
 }
@@ -34,7 +50,7 @@ func SetCfgName(in string) {
 	c.SetCfgName(in)
 }
 
-func (c *Config) SetCfgName(in string) {
+func (c *CnfYaml) SetCfgName(in string) {
 	if in != "" {
 		c.cfgName = in
 	}
@@ -45,7 +61,7 @@ func (c *Config) SetCfgName(in string) {
 func SetCfgType(in string) {
 	c.SetCfgType(in)
 }
-func (c *Config) SetCfgType(in string) {
+func (c *CnfYaml) SetCfgType(in string) {
 	if in != "" {
 		c.cfgType = in
 	}
@@ -56,7 +72,7 @@ func (c *Config) SetCfgType(in string) {
 func SetCfgPath(in string) {
 	c.SetCfgPath(in)
 }
-func (c *Config) SetCfgPath(in string) {
+func (c *CnfYaml) SetCfgPath(in string) {
 	if in != "" {
 		c.cfgPath = in
 	}
@@ -67,9 +83,18 @@ func Get(key string) any {
 	return viper.Get(key)
 }
 
+func GetStringMap(key string) any {
+	return viper.GetStringMap(key)
+}
+
+func Unmarshal(c interface{}) (err error) {
+	err = viper.Unmarshal(&c)
+	return err
+}
+
 // ReadCfg will discover and load the configuration file from disk
 // and key/value stores, searching in one of the defined paths.
-func Install() {
+func Install() (err error) {
 	// 设置配置文件的名字
 	viper.SetConfigName(c.cfgName)
 	// 设置配置文件的类型
@@ -77,11 +102,14 @@ func Install() {
 	// 添加配置文件的路径，指定 config 目录下寻找
 	viper.AddConfigPath(c.cfgPath)
 	// 寻找配置文件并读取
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(fmt.Errorf("fatal error config file: %w", err))
-	}
+	err = viper.ReadInConfig()
 
+	if c.CallBack != nil {
+		viper.WatchConfig()
+		viper.OnConfigChange(c.CallBack)
+	}
+	err = Unmarshal(&cnf)
+	return
 	// fmt.Println(viper.Get("mysql"))     // map[port:3306 url:127.0.0.1]
 	// fmt.Println(viper.Get("mysql.url")) // 127.0.0.1
 }

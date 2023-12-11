@@ -14,6 +14,8 @@ func TestCfg(t *testing.T) {
 	SetCfgType("yaml")
 	// 读取
 	Install()
-	fmt.Println(Get("mysql"))     // map[port:3306 url:127.0.0.1]
-	fmt.Println(Get("mysql.url")) // 127.0.0.1
+	fmt.Println(Get("server.address")) // map[port:3306 url:127.0.0.1] .0.0.1
+
+	fmt.Println(SysCnf().Database["default"]["default"].Link)
+
 }

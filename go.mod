@@ -3,6 +3,7 @@ module github.com/cuisi521/go-cs-core
 go 1.21
 
 require (
+	github.com/fsnotify/fsnotify v1.6.0
 	github.com/lib/pq v1.10.9
 	github.com/redis/go-redis/v9 v9.3.0
 	github.com/sirupsen/logrus v1.9.3
@@ -22,7 +23,6 @@ require (
 	github.com/clbanning/mxj v1.8.4 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/structs v1.1.0 // indirect
-	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect

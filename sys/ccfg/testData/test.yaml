@@ -1,7 +1,54 @@
-mysql:
-  url: 127.0.0.1
-  port: 3306
+server:
+  host:     ":8000"
+  debug: true
+  maxHeaderBytes: "20KB" #请求头大小限制
+  clientMaxBodySize: "200MB" #客户端上传文件大小限制
+  httpsPort: 8000
+  httpPort: 8001
+# 日志
+logger:
+  level : "all"
+  stdout: true
+  path: "bin/logs/system"
+  file: "{Y-m-d}.log"
+  outColor: true
 
-redis:
-  host: 127.0.0.1
-  port: 6379
+#数据库
+database:
+  # 默认数据库组
+  default:
+    # 默认数据库
+    default:
+      # pgsql
+      link: "pgsql:postgres:redmoon@tcp(127.0.0.1:5533)/sowell_go"
+      # tidb
+      #link: "tidb:root:sowell@2023@tcp(127.0.0.1:4000)/sowell_go_db?loc=Local&parseTime=true"
+      debug: true
+      charset: "utf8mb4" #数据库编码
+      dryRun: false #空跑
+      maxIdle: 10 #连接池最大闲置的连接数
+      maxOpen: 10 #连接池最大打开的连接数
+      maxLifetime: 30 #(单位秒)连接对象可重复使用的时间长度
+      default:
+    # 默认数据库
+    default1:
+      # pgsql
+      link: "pgsql:postgres:redmoon@tcp(127.0.0.1:5533)/sowell_go"
+      # tidb
+      #link: "tidb:root:sowell@2023@tcp(127.0.0.1:4000)/sowell_go_db?loc=Local&parseTime=true"
+      debug: true
+      charset: "utf8mb4" #数据库编码
+      dryRun: false #空跑
+      maxIdle: 10 #连接池最大闲置的连接数
+      maxOpen: 10 #连接池最大打开的连接数
+      maxLifetime: 30 #(单位秒)连接对象可重复使用的时间长度
+cache:
+  redis:
+    default:
+      host: 127.0.0.1:5380
+      db: 8
+      idleTimeout: 600
+      maxActive: 100
+      pass: redmoon
+
+version: v1.0.0

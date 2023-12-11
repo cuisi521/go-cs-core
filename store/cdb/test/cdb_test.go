@@ -45,12 +45,13 @@ func install() {
 	cdb.SetCnf(cfg)
 
 }
-func init() {
+func initDb() {
 	install()
 	cdb.Install()
 }
 
 func TestInstall(t *testing.T) {
+	initDb()
 	for i := 0; i < 10; i++ {
 		cdb.DB("default")
 	}

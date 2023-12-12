@@ -3,6 +3,8 @@ package clog
 import (
 	"fmt"
 	"os"
+	"runtime"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 )
@@ -39,6 +41,7 @@ func (hook *Hook) Fire(entry *logrus.Entry) (err error) {
 	if hook.Mod && hook.Level != entry.Level {
 		return nil
 	}
+
 	message, err := getMessage(entry, hook.LineNumber)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to read entry, %v", err)
@@ -76,21 +79,22 @@ func (hook *Hook) Levels() []logrus.Level {
 
 func getMessage(entry *logrus.Entry, lineNumber bool) (message string, err error) {
 	message = message + fmt.Sprintf("%s ", entry.Message)
-	// file, lineNumber := GetCallerIgnoringLogMulti(2)
-	// if file != "" {
-	// 	sep := fmt.Sprintf("%s/src/", os.Getenv("GOPATH"))
-	// 	fileName := strings.Split(file, sep)
-	// 	if len(fileName) >= 2 {
-	// 		file = fileName[1]
-	// 	}
-	// }
-	// message = fmt.Sprintf("%s:%d ", file, lineNumber) + message
-	//
 	if entry.HasCaller() {
 		if !lineNumber {
 			message = fmt.Sprintf("%s", entry.Caller.Function) + " " + message
 		} else {
-			message = fmt.Sprintf("%s:%v", entry.Caller.Function, entry.Caller.Line) + " " + message
+			pc, file, line, ok := runtime.Caller(11)
+			if ok {
+				funcName := runtime.FuncForPC(pc).Name()
+				fmt.Println(funcName)
+				funcNames := strings.Split(runtime.FuncForPC(pc).Name(), "/")
+				message = fmt.Sprintf("%s:%v [%s]", file, line, funcNames[len(funcNames)-1]) + " " + message
+				entry.Caller.Function = funcName
+				entry.Caller.Line = line
+				entry.Caller.PC = pc
+				entry.Caller.File = file
+			}
+
 		}
 
 	}

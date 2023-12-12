@@ -77,7 +77,7 @@ func (l *MuxWriter) SetFd(fd *os.File) {
 	l.fd = fd
 }
 
-// NewFileWriter create a FileLogWriter returning as LoggerInterface.
+// NewFileWriter create a FileLogWriter returning as LoggerInterface.1000000
 func NewFileWriter() LoggerInterface {
 	w := &LogWriter{
 		Filename: "",

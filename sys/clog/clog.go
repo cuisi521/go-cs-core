@@ -145,7 +145,7 @@ func Trace(i ...interface{}) {
 	ler.Trace(i...)
 }
 func (v Log) Trace(i ...interface{}) {
-	logrus.Fatal(i...)
+	logrus.Trace(i...)
 }
 
 func (v Log) WidthFields(m map[string]interface{}) *Entity {

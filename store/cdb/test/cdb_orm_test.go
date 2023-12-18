@@ -139,4 +139,5 @@ func TestZc(t *testing.T) {
 	slaves := []*xorm.Engine{slave1, slave2}
 	eg, err := xorm.NewEngineGroup(master, slaves)
 	fmt.Println(eg)
+
 }

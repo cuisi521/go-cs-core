@@ -6,7 +6,7 @@ import (
 
 func TestLog(t *testing.T) {
 	// 设置日志输出文件模式,true集中输出，false按级别文件输出
-	SetSaveMod(true)
+	SetSaveMod(false)
 	// 设置日志输出的文件名以及行号
 	SetLineNumber(true)
 	SetLogPath("./log")

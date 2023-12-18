@@ -170,7 +170,13 @@ func Install() {
 			log.Println("[error]", err.Error())
 		}
 	}
-	logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05"})
+	// logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: "2006-01-02 15:04:05"})
+	logrus.SetFormatter(&logrus.TextFormatter{
+		ForceQuote:      true,                  // 键值对加引号
+		TimestampFormat: "2006-01-02 15:04:05", // 时间格式
+		FullTimestamp:   true,
+	})
+
 	if l.lineNumber {
 		// 设置日志输出的文件名以及行号
 		logrus.SetReportCaller(true)

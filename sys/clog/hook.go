@@ -85,11 +85,16 @@ func getMessage(entry *logrus.Entry, lineNumber bool) (message string, err error
 		} else {
 			pc, file, line, ok := runtime.Caller(11)
 			if ok {
-				funcName := runtime.FuncForPC(pc).Name()
-				fmt.Println(funcName)
 				funcNames := strings.Split(runtime.FuncForPC(pc).Name(), "/")
-				message = fmt.Sprintf("%s:%v [%s]", file, line, funcNames[len(funcNames)-1]) + " " + message
-				entry.Caller.Function = funcName
+				funcName := strings.Split(funcNames[len(funcNames)-1], ".")
+				var flgName string
+				if len(funcName) > 1 {
+					flgName = funcName[1]
+				} else {
+					flgName = funcName[0]
+				}
+				message = fmt.Sprintf("%s:%v [%s]", file, line, flgName) + " " + message
+				entry.Caller.Function = flgName
 				entry.Caller.Line = line
 				entry.Caller.PC = pc
 				entry.Caller.File = file

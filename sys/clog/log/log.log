@@ -1,0 +1,2 @@
+2023/12/13 09:47:48 [INFO] /Users/cuisi/Documents/work/study/go-cs-core/sys/clog/clog_test.go:15 [TestLog] This is an informational message 
+2023/12/13 09:53:37 [INFO] /Users/cuisi/Documents/work/study/go-cs-core/sys/clog/clog_test.go:15 [TestLog] This is an informational message 

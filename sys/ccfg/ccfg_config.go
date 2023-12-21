@@ -13,6 +13,7 @@ var (
 type Config struct {
 	Server   ServerCnf                   `mapstructure:"server"`
 	Logger   LoggerCnf                   `mapstructure:"logger"`
+	Ssl      SslCnf                      `mapstructure:"ssl"`
 	Database map[string]map[string]DbCnf `mapstructure:"database"`
 	Cache    CacheCnf                    `mapstructure:"cache"`
 }
@@ -56,6 +57,14 @@ type LoggerCnf struct {
 
 	// 输出颜色
 	OutColor bool `mapstructure:"outColor"`
+}
+
+// SslCnf
+// @author By Cuisi 2023/12/21 09:20:00
+type SslCnf struct {
+	Enable bool   `mapstructure:"enable"`
+	Pem    string `mapstructure:"pem"`
+	Key    string `mapstructure:"key"`
 }
 
 // DbCnf 单节点数据库配置

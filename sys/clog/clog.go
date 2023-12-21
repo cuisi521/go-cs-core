@@ -20,12 +20,19 @@ var (
 
 type Loger interface {
 	Info(i ...interface{})
+	Infof(format string, args ...interface{})
 	Error(i ...interface{})
+	Errorf(format string, args ...interface{})
 	Panic(i ...interface{})
+	Panicf(format string, args ...interface{})
 	Fatal(i ...interface{})
+	Fatalf(format string, args ...interface{})
 	Warning(i ...interface{})
+	Warningf(format string, args ...interface{})
 	Debug(i ...interface{})
+	Debugf(format string, args ...interface{})
 	Trace(i ...interface{})
+	Tracef(format string, args ...interface{})
 	WidthField(k string, v interface{}) *Entity
 	WidthFields(m map[string]interface{}) *Entity
 }
@@ -92,6 +99,14 @@ func (v Log) Info(i ...interface{}) {
 	logrus.Info(i...)
 }
 
+func Infof(format string, args ...interface{}) {
+	ler.Infof(format, args...)
+}
+
+func (v Log) Infof(format string, args ...interface{}) {
+	logrus.Infof(format, args...)
+}
+
 // Error
 // @author By Cuisi 2023/10/31 11:04:00
 func Error(i ...interface{}) {
@@ -100,6 +115,14 @@ func Error(i ...interface{}) {
 
 func (v Log) Error(i ...interface{}) {
 	logrus.Error(i...)
+}
+
+func Errorf(format string, args ...interface{}) {
+	ler.Errorf(format, args...)
+}
+
+func (v Log) Errorf(format string, args ...interface{}) {
+	logrus.Errorf(format, args...)
 }
 
 // Panic
@@ -112,6 +135,14 @@ func (v Log) Panic(i ...interface{}) {
 	logrus.Panic(i...)
 }
 
+func Panicf(format string, args ...interface{}) {
+	ler.Panicf(format, args...)
+}
+
+func (v Log) Panicf(format string, args ...interface{}) {
+	logrus.Panicf(format, args...)
+}
+
 // Fatal
 // @author By Cuisi 2023/10/31 14:20:00
 func Fatal(i ...interface{}) {
@@ -121,13 +152,27 @@ func (v Log) Fatal(i ...interface{}) {
 	logrus.Fatal(i...)
 }
 
+func Fatalf(format string, args ...interface{}) {
+	ler.Fatalf(format, args...)
+}
+func (v Log) Fatalf(format string, args ...interface{}) {
+	logrus.Fatalf(format, args...)
+}
+
 // Warning
 // @author By Cuisi 2023/10/31 14:20:00
 func Warning(i ...interface{}) {
 	ler.Warning(i...)
 }
 func (v Log) Warning(i ...interface{}) {
-	logrus.Fatal(i...)
+	logrus.Warning(i...)
+}
+
+func Warningf(format string, args ...interface{}) {
+	ler.Warningf(format, args...)
+}
+func (v Log) Warningf(format string, args ...interface{}) {
+	logrus.Warningf(format, args...)
 }
 
 // Debug
@@ -136,7 +181,14 @@ func Debug(i ...interface{}) {
 	ler.Debug(i...)
 }
 func (v Log) Debug(i ...interface{}) {
-	logrus.Fatal(i...)
+	logrus.Debug(i...)
+}
+
+func Debugf(format string, args ...interface{}) {
+	ler.Debugf(format, args...)
+}
+func (v Log) Debugf(format string, args ...interface{}) {
+	logrus.Debugf(format, args...)
 }
 
 // Trace
@@ -146,6 +198,13 @@ func Trace(i ...interface{}) {
 }
 func (v Log) Trace(i ...interface{}) {
 	logrus.Trace(i...)
+}
+
+func Tracef(format string, args ...interface{}) {
+	ler.Tracef(format, args...)
+}
+func (v Log) Tracef(format string, args ...interface{}) {
+	logrus.Tracef(format, args...)
 }
 
 func (v Log) WidthFields(m map[string]interface{}) *Entity {

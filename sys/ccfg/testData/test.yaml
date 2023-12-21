@@ -12,6 +12,10 @@ logger:
   path: "bin/logs/system"
   file: "{Y-m-d}.log"
   outColor: true
+ssl:
+  enable: false
+  pem:
+  key:
 
 #数据库
 database:

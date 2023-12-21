@@ -33,8 +33,8 @@ type Loger interface {
 	Debugf(format string, args ...interface{})
 	Trace(i ...interface{})
 	Tracef(format string, args ...interface{})
-	WidthField(k string, v interface{}) *Entity
-	WidthFields(m map[string]interface{}) *Entity
+	// WidthField(k string, v interface{}) *Entity
+	// WidthFields(m map[string]interface{}) *Entity
 }
 
 type Log struct {

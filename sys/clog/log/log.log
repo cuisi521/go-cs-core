@@ -6,3 +6,4 @@
 2023/12/20 16:06:04 [INFO] /Users/cuisi/Documents/work/study/go-cs-core/sys/clog/clog.go:103 [Infof] [200m 200 [0m111 
 2023/12/20 16:07:15 [INFO] /Users/cuisi/Documents/work/study/go-cs-core/sys/clog/clog_test.go:16 [TestLog] This is an informational message 
 2023/12/20 16:07:15 [INFO] /Users/cuisi/Documents/work/study/go-cs-core/sys/clog/clog.go:103 [Infof] [200m 200 [0m 111 
+2023/12/21 11:01:01 [INFO] /Users/cuisi/Documents/work/study/go-cs-core/sys/clog/clog.go:230 [SInfof] [200m 200 [0m 111 

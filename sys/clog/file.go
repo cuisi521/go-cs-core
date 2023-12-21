@@ -19,6 +19,7 @@ const (
 	LevelWarn
 	LevelInfo
 	LevelDebug
+	LevelSInfo = 7
 )
 
 // LoggerInterface Logger接口

@@ -53,6 +53,15 @@ cache:
       db: 8
       idleTimeout: 600
       maxActive: 100
-      pass: redmoon
+      pwd: redmoon
+token:
+  key: "4064f4fb876232173fc241016f783574"
+  mod: 0
+  cacheKey: "T-"
+  excludePaths:
+  loginPath: "/login"
+  loginOutPath: "/loginOut"
+  timeOut: 86400000 #超时时间 默认5天（毫秒） 1000*60*60*24*5 (5天)
+  maxRefresh: 43200000 #缓存刷新时间 默认为超时时间的一半（毫秒）1000*60*60*24(1天)
 
 version: v1.0.0

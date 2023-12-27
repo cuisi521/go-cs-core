@@ -51,7 +51,7 @@ func TestHSet(t *testing.T) {
 
 func install() error {
 	cnf := &cache.Config{
-		Address:       "120.27.203.171:9999",
+		Address:       "127.0.0.1:9999",
 		Db:            0,
 		User:          "",
 		Pass:          "sowell@123",

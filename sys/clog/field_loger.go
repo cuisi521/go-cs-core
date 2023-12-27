@@ -12,13 +12,13 @@ type Entity struct {
 	data map[string]interface{}
 }
 
-func WidthFields(m map[string]interface{}) *Entity {
-	return ler.WidthFields(m)
-}
-
-func WidthField(k string, v interface{}) *Entity {
-	return ler.WidthField(k, v)
-}
+// func WidthFields(m map[string]interface{}) *Entity {
+// 	return ler.WidthFields(m)
+// }
+//
+// func WidthField(k string, v interface{}) *Entity {
+// 	return ler.WidthField(k, v)
+// }
 
 func (e Entity) Info(i ...interface{}) {
 	logrus.WithFields(e.data).Info(i...)

@@ -16,6 +16,7 @@ type Config struct {
 	Ssl      SslCnf                      `mapstructure:"ssl"`
 	Database map[string]map[string]DbCnf `mapstructure:"database"`
 	Cache    CacheCnf                    `mapstructure:"cache"`
+	Token    TokenCnf                    `mapstructure:"token"`
 }
 
 // ServerCnf 服务配置
@@ -99,7 +100,21 @@ type RedisCnf struct {
 	Db          int    `mapstructure:"db"`
 	idleTimeout int    `mapstructure:"idleTimeout"`
 	maxActive   int    `mapstructure:"maxActive"`
-	pass        string `mapstructure:"pass"`
+	Password    string `mapstructure:"pwd"`
+}
+
+// TokenCnf
+// @author By Cuisi 2023/12/25 14:23:00
+type TokenCnf struct {
+	Key string `mapstructure:"key"`
+	// 0 默认jwt，1 内存 2 redis
+	Mod          int    `mapstructure:"mod"`
+	CacheKey     string `mapstructure:"cacheKey"`
+	ExcludePaths string `mapstructure:"excludePaths"`
+	LoginPath    string `mapstructure:"loginPath"`
+	LoginOutPath string `mapstructure:"loginOutPath"`
+	TimeOut      int64  `mapstructure:"timeOut"`
+	MaxRefresh   int64  `mapstructure:"maxRefresh"`
 }
 
 func SysCnf() *Config {

@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"go-cs-orm/store/cache"
+	"github.com/cuisi521/go-cs-core/store/cache"
 )
 
 func TestCatche(t *testing.T) {
@@ -75,4 +75,30 @@ func TestCatche(t *testing.T) {
 	// if c.Keys() != 0 {
 	// 	t.Error("缓存清空失败")
 	// }
+}
+
+type user struct {
+	Name string `json:"name"`
+}
+
+func TestCatche1(t *testing.T) {
+	u := &user{Name: "nsssss"}
+	c := cache.NewMemCache()
+	c.SetMaxMemory("10MB")
+	err := c.SetEX("v1", u, time.Second*10)
+	if err != nil {
+		fmt.Println("err:", err.Error())
+	} else {
+		for i := 0; i < 20; i++ {
+			time.Sleep(time.Second * 2)
+			r, err := c.Get("v1")
+			if err != nil {
+				fmt.Println("err1:", err.Error())
+			} else {
+				rs, er := r.(*user)
+				fmt.Println("r:", rs.Name, er, i)
+			}
+		}
+
+	}
 }

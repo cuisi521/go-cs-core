@@ -43,7 +43,7 @@ var db *xorm.Engine
 func TestDb(t *testing.T) {
 	var err error
 	// 1.创建db引擎
-	db, err = xorm.NewPostgreSQL("postgres://postgres:clm@2023@150.158.46.32:5433/dbtest?sslmode=disable")
+	db, err = xorm.NewPostgreSQL("postgres://postgres:clm@2023@127.0.0.1:5433/dbtest?sslmode=disable")
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -90,6 +90,7 @@ type DbCnf struct {
 // CacheCnf 缓存配置
 // @author By Cuisi 2023/12/11 15:28:00
 type CacheCnf struct {
+	Mod   int                 `mapstructure:"mod"`
 	Redis map[string]RedisCnf `mapstructure:"redis"`
 }
 

@@ -48,12 +48,17 @@ type Jwt struct {
 }
 
 func RegisterCache() {
+	if ccfg.SysCnf() == nil {
+		jwter = InstallJwt()
+		return
+	}
 	switch ccfg.SysCnf().Token.Mod {
 	case 0:
 		jwter = InstallJwt()
 	case 1:
 		jwter = InstallCache()
 	case 2:
+		jwter = InstallRedis()
 	default:
 		jwter = InstallJwt()
 	}

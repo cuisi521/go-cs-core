@@ -7,6 +7,7 @@ package jwt
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"time"
 
@@ -14,16 +15,17 @@ import (
 
 	"github.com/cuisi521/go-cs-core/store/cache"
 	"github.com/cuisi521/go-cs-core/sys/ccfg"
-	"github.com/cuisi521/go-cs-core/sys/clog"
 )
 
 type JwtRedis struct {
 	cache *cache.RedisEngine
 }
 
-func InstallRedis(cnf ccfg.RedisCnf) *JwtRedis {
-	if cache.Redis() == nil {
-		cnf := &cache.Config{
+func InstallRedis() *JwtRedis {
+	alias := ccfg.SysCnf().Token.Redis
+	if cache.Redis(alias) == nil {
+		cnf := ccfg.SysCnf().Cache.Redis[alias]
+		redisConfig := &cache.Config{
 			Address:       cnf.Host,
 			Db:            cnf.Db,
 			User:          "",
@@ -35,14 +37,17 @@ func InstallRedis(cnf ccfg.RedisCnf) *JwtRedis {
 			TLSSkipVerify: false,
 			TLSConfig:     nil,
 			SlaveOnly:     false,
-			PoolSize:      50,
+			PoolSize:      cnf.PoolSize,
 		}
-		err := cache.New(cnf)
+		redisCnf := &cache.RedisCnfs{Alias: alias, Cnf: redisConfig}
+		redisCnfs := []*cache.RedisCnfs{}
+		redisCnfs = append(redisCnfs, redisCnf)
+		err := cache.New(redisCnfs)
 		if err != nil {
-			clog.Error(err.Error())
+			fmt.Println(err.Error())
 		}
 	}
-	return &JwtRedis{cache: cache.Redis()}
+	return &JwtRedis{cache: cache.Redis(alias)}
 }
 
 func (j *JwtRedis) CreateToken(key []byte, pl *StandardClaims) (string, *JwtResult) {

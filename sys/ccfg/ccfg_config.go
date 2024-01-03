@@ -102,14 +102,17 @@ type RedisCnf struct {
 	idleTimeout int    `mapstructure:"idleTimeout"`
 	maxActive   int    `mapstructure:"maxActive"`
 	Password    string `mapstructure:"pwd"`
+	PoolSize    int    `mapstructure:"poolSize"`
 }
 
 // TokenCnf
 // @author By Cuisi 2023/12/25 14:23:00
 type TokenCnf struct {
 	Key string `mapstructure:"key"`
-	// 0 默认jwt，1 内存 2 redis
-	Mod          int    `mapstructure:"mod"`
+	// 0 默认 jwt，1 内存 2 redis
+	Mod int `mapstructure:"mod"`
+	// redis 别名
+	Redis        string `mapstructure:"redis"`
 	CacheKey     string `mapstructure:"cacheKey"`
 	ExcludePaths string `mapstructure:"excludePaths"`
 	LoginPath    string `mapstructure:"loginPath"`

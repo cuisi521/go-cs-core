@@ -30,3 +30,11 @@ type Config struct {
 	SlaveOnly       bool          `json:"slaveOnly"`
 	PoolSize        int           `json:"poolSize"`
 }
+
+type RedisCnfs struct {
+	// 配置别名
+	Alias string
+
+	// 配置信息
+	Cnf *Config
+}

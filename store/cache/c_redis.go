@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	re *RedisEngine
+	re = make(map[string]*RedisEngine)
 )
 
 type RedisEngine struct {
@@ -24,15 +24,22 @@ type RedisEngine struct {
 
 // Redis 获取 RedisEngine
 func Redis(db ...string) *RedisEngine {
-	return re
+	key := "default"
+	if len(db) > 0 {
+		key = db[0]
+	}
+	return re[key]
 }
 
 // New 创建redis连接对象
-func New(cnf *Config) error {
-	re = &RedisEngine{
-		cnf: cnf,
+func New(cnf []*RedisCnfs) error {
+	var err error
+	for _, c := range cnf {
+		r := &RedisEngine{cnf: c.Cnf}
+		re[c.Alias] = r
+		err = r.Connect()
 	}
-	return re.Connect()
+	return err
 }
 
 // Connect 连接redis
@@ -76,7 +83,7 @@ func (r *RedisEngine) SetEX(key string, value interface{}, expiration time.Durat
 }
 
 // Get 通过key获取值
-func (r *RedisEngine) Get(key string) (result string, err error) {
+func (r *RedisEngine) Get(key string) (result interface{}, err error) {
 	result, err = r.db.Get(r.ctx, key).Result()
 	return
 }

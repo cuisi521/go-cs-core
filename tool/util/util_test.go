@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/cuisi521/go-cs-core/tool/util/conv"
+	"github.com/cuisi521/go-cs-core/tool/util/cutil"
 )
 
 func TestConvert(t *testing.T) {
@@ -57,4 +58,34 @@ func TestInterface(ts *testing.T) {
 	DumpMethodSet(&t)
 	DumpMethodSet(&pt)
 	DumpMethodSet((*Interface)(nil))
+}
+
+func TestTry(t *testing.T) {
+	var ts *string
+	err := cutil.Try(func() {
+		var tv string = "1"
+		ts = &tv
+		fmt.Println(*ts)
+		// panic("err.ro")
+	})
+	if err != nil {
+		fmt.Println("sssssssss")
+	}
+}
+
+func TestTryCache(t *testing.T) {
+	var ts *string
+	cutil.TryCache(func() {
+		var tv string = "1"
+		ts = &tv
+		fmt.Println(*ts)
+		panic("err.ro")
+	}, func(exception error) {
+		panic("err.ro")
+		if exception != nil {
+			fmt.Println("cvv1")
+		}
+
+	})
+
 }

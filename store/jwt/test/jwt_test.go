@@ -20,6 +20,7 @@ type User struct {
 }
 
 func TestCreateToken(t *testing.T) {
+	jwt.RegisterCache()
 	var key []byte = []byte("VVabc8yhfushc78jdn_98Ytdd76ddcty")
 
 	// user := User{Name: "cuisi", Pwd: "ves123", Remark: "111"}

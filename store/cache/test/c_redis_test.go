@@ -50,7 +50,7 @@ func TestHSet(t *testing.T) {
 }
 
 func install() error {
-	cnf := &cache.Config{
+	redisCnf := &cache.Config{
 		Address:       "127.0.0.1:9999",
 		Db:            0,
 		User:          "",
@@ -64,7 +64,11 @@ func install() error {
 		SlaveOnly:     false,
 		PoolSize:      50,
 	}
-	err := cache.New(cnf)
+
+	cnf := &cache.RedisCnfs{Alias: "default", Cnf: redisCnf}
+	rcnf := make([]*cache.RedisCnfs, 0)
+	rcnf = append(rcnf, cnf)
+	err := cache.New(rcnf)
 	if err != nil {
 		fmt.Println(err.Error())
 	}

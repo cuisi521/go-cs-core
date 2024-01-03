@@ -61,6 +61,10 @@ func New() *Log {
 	return l
 }
 
+func GetLog() *Log {
+	return l
+}
+
 // SetLogPath 日志保存路径
 // @author By Cuisi 2023/10/31 09:56:00
 func SetLogPath(path string) {

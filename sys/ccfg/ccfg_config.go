@@ -4,6 +4,10 @@
 // @Desc
 package ccfg
 
+import (
+	"time"
+)
+
 var (
 	cnf *Config
 )
@@ -71,8 +75,14 @@ type SslCnf struct {
 // DbCnf 单节点数据库配置
 // @author By Cuisi 2023/12/11 15:27:00
 type DbCnf struct {
+	// 数据库驱动
+	Driver string `mapstructure:"driver"`
+
 	// 数据库链接
 	Link string `mapstructure:"link"`
+
+	// 编码
+	Charset string `mapstructure:"charset"`
 
 	// 是否调试模式
 	Debug bool `mapstructure:"debug"`
@@ -81,10 +91,10 @@ type DbCnf struct {
 	maxIdle int `mapstructure:"maxIdle"`
 
 	// 连接池最大打开的连接数
-	MaxOpen string `mapstructure:"maxOpen"`
+	MaxOpen int `mapstructure:"maxOpen"`
 
 	// (单位秒)连接对象可重复使用的时间长度
-	MaxLifetime string `mapstructure:"maxLifetime"`
+	MaxLifetime time.Duration `mapstructure:"maxLifetime"`
 }
 
 // CacheCnf 缓存配置

@@ -24,6 +24,8 @@ database:
   default:
     # 默认数据库
     default:
+      # 数据库驱动
+      driver: "pg"
       # pgsql
       link: "pgsql:postgres:redmoon@tcp(127.0.0.1:5533)/sowell_go"
       # tidb

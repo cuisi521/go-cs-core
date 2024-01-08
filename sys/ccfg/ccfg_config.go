@@ -88,7 +88,7 @@ type DbCnf struct {
 	Debug bool `mapstructure:"debug"`
 
 	// 连接池最大闲置的连接数
-	maxIdle int `mapstructure:"maxIdle"`
+	MaxIdle int `mapstructure:"maxIdle"`
 
 	// 连接池最大打开的连接数
 	MaxOpen int `mapstructure:"maxOpen"`

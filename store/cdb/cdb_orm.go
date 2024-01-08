@@ -42,7 +42,9 @@ func DB(d ...string) (xe *xorm.Engine) {
 	if len(d) <= 1 {
 		// 判断是否负载均衡
 		if g, ok := lbs[_gp]; ok {
-			_db = g.Next()
+			if g.Next() != "" {
+				_db = g.Next()
+			}
 		}
 	} else {
 		_gp = d[0]

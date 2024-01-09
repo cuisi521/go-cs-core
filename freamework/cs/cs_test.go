@@ -11,7 +11,7 @@ import (
 )
 
 func TestLog(t *testing.T) {
-	clog.SetSaveMod(true)
+	clog.SetSaveMod(false)
 	// 设置日志输出的文件名以及行号
 	clog.SetLineNumber(true)
 	clog.SetLogPath("./log")

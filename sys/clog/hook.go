@@ -83,6 +83,45 @@ func getMessage(entry *logrus.Entry, lineNumber bool) (message string, err error
 		if !lineNumber {
 			message = fmt.Sprintf("%s", entry.Caller.Function) + " " + message
 		} else {
+			file, lineNumber, pc := GetCallerIgnoringLogMulti(2)
+
+			// pc1 := make([]uintptr, 100)
+			// n := runtime.Callers(0, pc1)
+			// frames := runtime.CallersFrames(pc1[:n])
+			// for i := 0; true; i++ {
+			// 	frame, more := frames.Next()
+			// 	fmt.Printf("file: %s, line: %d, function: %s, Address: %v\n",
+			// 		frame.File, frame.Line, frame.Function, frame.Entry)
+			// 	if !more {
+			// 		break
+			// 	}
+			// }
+
+			funcName := runtime.FuncForPC(pc).Name()
+			message = fmt.Sprintf("%s:%d ", funcName, lineNumber) + message
+			entry.Caller.Function = funcName
+			entry.Caller.Line = lineNumber
+			entry.Caller.PC = pc
+			entry.Caller.File = file
+			for k, v := range entry.Data {
+				message = message + fmt.Sprintf("%v:%v ", k, v)
+			}
+			return
+		}
+
+	}
+	for k, v := range entry.Data {
+		message = message + fmt.Sprintf("%v:%v ", k, v)
+	}
+	return
+}
+
+func getMessage1(entry *logrus.Entry, lineNumber bool) (message string, err error) {
+	message = message + fmt.Sprintf("%s ", entry.Message)
+	if entry.HasCaller() {
+		if !lineNumber {
+			message = fmt.Sprintf("%s", entry.Caller.Function) + " " + message
+		} else {
 			pc, file, line, ok := runtime.Caller(11)
 			if ok {
 				funcNames := strings.Split(runtime.FuncForPC(pc).Name(), "/")

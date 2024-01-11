@@ -81,7 +81,7 @@ func getMessage(entry *logrus.Entry, lineNumber bool) (message string, err error
 	message = message + fmt.Sprintf("%s ", entry.Message)
 	if entry.HasCaller() {
 		if !lineNumber {
-			message = fmt.Sprintf("%s", entry.Caller.Function) + " " + message
+			message = fmt.Sprintf("%s %s", entry.Caller.Function, message)
 		} else {
 			file, lineNumber, pc := GetCallerIgnoringLogMulti(2)
 
@@ -98,7 +98,7 @@ func getMessage(entry *logrus.Entry, lineNumber bool) (message string, err error
 			// }
 
 			funcName := runtime.FuncForPC(pc).Name()
-			message = fmt.Sprintf("%s:%d ", funcName, lineNumber) + message
+			message = fmt.Sprintf("%s:%d %s", funcName, lineNumber, message)
 			entry.Caller.Function = funcName
 			entry.Caller.Line = lineNumber
 			entry.Caller.PC = pc

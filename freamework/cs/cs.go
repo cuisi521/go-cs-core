@@ -11,6 +11,7 @@ import (
 	"github.com/cuisi521/go-cs-core/store/cdb"
 	"github.com/cuisi521/go-cs-core/sys/ccfg"
 	"github.com/cuisi521/go-cs-core/sys/clog"
+	"github.com/cuisi521/go-cs-core/tool/util/cutil"
 )
 
 // DB 返回数据库xorm的对象
@@ -42,4 +43,19 @@ func Memory() cache.Cacher {
 // 在redis和内存自动选择引擎
 func AutoCache(name ...string) (c cache.Cacher) {
 	return cache.AutoCache(name...)
+}
+
+// ESM3 SM3加密
+func ESM3(c string) string {
+	return cutil.ESM3(c)
+}
+
+// AutoId 自动id
+func AutoId(n ...int64) (node *cutil.Node, err error) {
+	var flg int64 = 0
+	if len(n) > 0 {
+		flg = n[0]
+	}
+	node, err = cutil.NewNode(flg)
+	return
 }

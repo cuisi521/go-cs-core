@@ -9,6 +9,7 @@ require (
 	github.com/redis/go-redis/v9 v9.3.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/viper v1.17.0
+	github.com/tjfoc/gmsm v1.4.1
 	github.com/xormplus/xorm v0.0.0-20210822100304-4e1d4fcc1e67
 	golang.org/x/net v0.19.0
 )

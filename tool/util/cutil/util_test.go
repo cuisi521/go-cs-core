@@ -1,4 +1,4 @@
-package cstr
+package cutil
 
 import (
 	"fmt"
@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/cuisi521/go-cs-core/tool/util/conv"
-	"github.com/cuisi521/go-cs-core/tool/util/cutil"
 )
 
 func TestConvert(t *testing.T) {
@@ -62,7 +61,7 @@ func TestInterface(ts *testing.T) {
 
 func TestTry(t *testing.T) {
 	var ts *string
-	err := cutil.Try(func() {
+	err := Try(func() {
 		var tv string = "1"
 		ts = &tv
 		fmt.Println(*ts)
@@ -75,7 +74,7 @@ func TestTry(t *testing.T) {
 
 func TestTryCache(t *testing.T) {
 	var ts *string
-	cutil.TryCache(func() {
+	TryCatch(func() {
 		var tv string = "1"
 		ts = &tv
 		fmt.Println(*ts)

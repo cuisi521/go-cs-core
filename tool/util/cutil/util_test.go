@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/cuisi521/go-cs-core/tool/util/conv"
+	"github.com/cuisi521/go-cs-core/tool/util/crand"
 )
 
 func TestConvert(t *testing.T) {
@@ -86,5 +87,14 @@ func TestTryCache(t *testing.T) {
 		}
 
 	})
+
+}
+
+func TestRand(t *testing.T) {
+	for i := 0; i < 100; i++ {
+		go func() {
+			fmt.Println(crand.RS(16))
+		}()
+	}
 
 }

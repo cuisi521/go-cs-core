@@ -38,7 +38,7 @@ var (
 
 type Jwter interface {
 	CreateToken(key []byte, pl *StandardClaims) (string, *JwtResult)
-	ParseToken(token string, key []byte) (*Jwt, *JwtResult)
+	ParseToken(token string, key []byte) (*StandardClaims, *JwtResult)
 }
 
 type Jwt struct {
@@ -52,16 +52,16 @@ func RegisterCache() {
 		jwter = InstallJwt()
 		return
 	}
-	switch ccfg.SysCnf().Token.Mod {
-	case 0:
-		jwter = InstallJwt()
-	case 1:
-		jwter = InstallCache()
-	case 2:
-		jwter = InstallRedis()
-	default:
-		jwter = InstallJwt()
-	}
+	// switch ccfg.SysCnf().Token.Mod {
+	// case 0:
+	// 	jwter = InstallJwt()
+	// case 1:
+	// 	jwter = InstallCache()
+	// case 2:
+	// 	jwter = InstallRedis()
+	// default:
+	// 	jwter = InstallJwt()
+	// }
 }
 
 func InstallJwt() *Jwt {
@@ -113,7 +113,7 @@ func (j *Jwt) CreateToken(key []byte, pl *StandardClaims) (string, *JwtResult) {
 
 // ParseJwt 解析token
 // @author By Cuisi 2023/12/25 15:02:00
-func (j *Jwt) ParseToken(token string, key []byte) (*Jwt, *JwtResult) {
+func (j *Jwt) ParseToken(token string, key []byte) (*StandardClaims, *JwtResult) {
 	// 分解规定，我们使用.进行分隔，所以我们通过.进行分隔成三个字符串的数组
 	jwtParts := strings.Split(token, ".")
 	// 数据数组长度不是3就说明token在格式上就不合法
@@ -149,13 +149,14 @@ func (j *Jwt) ParseToken(token string, key []byte) (*Jwt, *JwtResult) {
 		}
 	}
 	// 返回我们的JWT对象以供后续使用
-	return &Jwt{encodedHeader, string(dstPayload), signature}, nil
+	// return &Jwt{encodedHeader, string(dstPayload), signature}, nil
+	return sc, nil
 }
 
 func CreateToken(key []byte, pl *StandardClaims) (string, *JwtResult) {
 	return jwter.CreateToken(key, pl)
 }
 
-func ParseToken(token string, key []byte) (*Jwt, *JwtResult) {
+func ParseToken(token string, key []byte) (*StandardClaims, *JwtResult) {
 	return jwter.ParseToken(token, key)
 }

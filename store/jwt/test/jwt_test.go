@@ -49,6 +49,6 @@ func parseCacheToken(token string) {
 		fmt.Println("error:", err.Message, err.Code)
 	} else {
 		fmt.Println(j)
-		fmt.Println(j.StandardClaims)
+		fmt.Println(j.UseKey)
 	}
 }

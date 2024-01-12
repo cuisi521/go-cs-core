@@ -11,8 +11,6 @@ import (
 	"encoding/json"
 	"strings"
 	"time"
-
-	"github.com/cuisi521/go-cs-core/sys/ccfg"
 )
 
 const (
@@ -48,10 +46,11 @@ type Jwt struct {
 }
 
 func RegisterCache() {
-	if ccfg.SysCnf() == nil {
-		jwter = InstallJwt()
-		return
-	}
+	jwter = InstallJwt()
+	// if ccfg.SysCnf() == nil {
+	// 	jwter = InstallJwt()
+	// 	return
+	// }
 	// switch ccfg.SysCnf().Token.Mod {
 	// case 0:
 	// 	jwter = InstallJwt()

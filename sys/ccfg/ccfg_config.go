@@ -43,6 +43,9 @@ type ServerCnf struct {
 
 	// #客户端上传文件大小限制 默认：200MB
 	ClientMaxBodySize string `mapstructure:"clientMaxBodySize"`
+
+	// 分布式节点(0-1024)
+	Node int `mapstructure:"node"`
 }
 
 // LoggerCnf 日志配置

@@ -45,7 +45,7 @@ type ServerCnf struct {
 	ClientMaxBodySize string `mapstructure:"clientMaxBodySize"`
 
 	// 分布式节点(0-1024)
-	Node int `mapstructure:"node"`
+	Node int64 `mapstructure:"node"`
 }
 
 // LoggerCnf 日志配置

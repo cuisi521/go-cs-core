@@ -94,6 +94,18 @@ func (r *RedisEngine) GetSet(key string, value interface{}) (result interface{},
 	return
 }
 
+func (r *RedisEngine) GetOrSetFuncLock(key string, callBack Func, expiration time.Duration) (result interface{}, err error) {
+	result, err = r.db.Get(r.ctx, key).Result()
+	if result == "" || err != nil {
+		result, err = callBack()
+		if err != nil {
+			return
+		}
+		result, err = r.db.SetNX(r.ctx, key, result, time.Second*10).Result()
+	}
+	return
+}
+
 // Del 删除keys
 func (r *RedisEngine) Del(keys ...string) (err error) {
 	err = r.db.Del(r.ctx, keys...).Err()

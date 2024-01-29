@@ -21,6 +21,7 @@ type Cacher interface {
 	SetEX(key string, value interface{}, expiration time.Duration) (err error)
 	Get(key string) (result interface{}, err error)
 	GetSet(key string, value interface{}) (result interface{}, err error)
+	GetOrSetFuncLock(key string, callBack Func, expiration time.Duration) (result interface{}, err error)
 	Del(keys ...string) (err error)
 	FlushDB() error
 }
@@ -112,6 +113,19 @@ func (mc *memCache) GetSet(key string, value interface{}) (result interface{}, e
 	return
 }
 
+func (mc *memCache) GetOrSetFuncLock(key string, callBack Func, expiration time.Duration) (result interface{}, err error) {
+	mc.locker.Lock()
+	defer mc.locker.Unlock()
+	if !mc.Exists(key) {
+		result, err = callBack()
+		if err != nil {
+			return
+		}
+		err = mc.Set(key, result)
+	}
+	return
+}
+
 func (mc *memCache) get(key string) (*memCacheValue, bool) {
 	val, ok := mc.values[key]
 	return val, ok
@@ -197,3 +211,5 @@ func (mc *memCache) cleanExpiredItem() {
 		}
 	}
 }
+
+type Func func() (value interface{}, err error)

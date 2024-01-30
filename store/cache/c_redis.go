@@ -94,6 +94,7 @@ func (r *RedisEngine) GetSet(key string, value interface{}) (result interface{},
 	return
 }
 
+// GetOrSetFuncLock 判断key是否存在，不存在调用callBack方法，将返回值插入内存数据库，注意加互斥锁解决并发安全问题
 func (r *RedisEngine) GetOrSetFuncLock(key string, callBack Func, expiration time.Duration) (result interface{}, err error) {
 	result, err = r.db.Get(r.ctx, key).Result()
 	if result == "" || err != nil {
@@ -101,7 +102,7 @@ func (r *RedisEngine) GetOrSetFuncLock(key string, callBack Func, expiration tim
 		if err != nil {
 			return
 		}
-		result, err = r.db.SetNX(r.ctx, key, result, time.Second*10).Result()
+		result, err = r.db.SetNX(r.ctx, key, result, time.Second*30).Result()
 	}
 	return
 }

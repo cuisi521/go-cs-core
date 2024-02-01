@@ -102,7 +102,7 @@ func (r *RedisEngine) GetOrSetFuncLock(key string, callBack Func, expiration tim
 		if err != nil {
 			return
 		}
-		result, err = r.db.SetNX(r.ctx, key, result, time.Second*30).Result()
+		result, err = r.db.SetNX(r.ctx, key, result, expiration).Result()
 	}
 	return
 }

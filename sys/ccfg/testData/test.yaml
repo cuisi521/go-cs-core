@@ -17,6 +17,10 @@ ssl:
   enable: false
   pem:
   key:
+# casbin 配置
+casbin:
+  model: "./resource/casbin/rbac_model.conf"
+  policy: "./resource/casbin/rbac_policy.csv"
 
 #数据库
 database:

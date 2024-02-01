@@ -18,6 +18,7 @@ type Config struct {
 	Server   ServerCnf                   `mapstructure:"server"`
 	Logger   LoggerCnf                   `mapstructure:"logger"`
 	Ssl      SslCnf                      `mapstructure:"ssl"`
+	Casbin   CasbinCnf                   `mapstructure:"casbin"`
 	Database map[string]map[string]DbCnf `mapstructure:"database"`
 	Cache    CacheCnf                    `mapstructure:"cache"`
 	Token    TokenCnf                    `mapstructure:"token"`
@@ -73,6 +74,11 @@ type SslCnf struct {
 	Enable bool   `mapstructure:"enable"`
 	Pem    string `mapstructure:"pem"`
 	Key    string `mapstructure:"key"`
+}
+
+type CasbinCnf struct {
+	Model  string `mapstructure:"model"`
+	Policy string `mapstructure:"policy"`
 }
 
 // DbCnf 单节点数据库配置

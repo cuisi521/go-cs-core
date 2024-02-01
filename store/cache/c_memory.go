@@ -122,7 +122,7 @@ func (mc *memCache) GetOrSetFuncLock(key string, callBack Func, expiration time.
 		if err != nil {
 			return
 		}
-		err = mc.Set(key, result)
+		err = mc.SetEX(key, result, expiration)
 	}
 	return
 }

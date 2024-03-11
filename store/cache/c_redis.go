@@ -5,6 +5,7 @@
 package cache
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -72,13 +73,23 @@ func (r *RedisEngine) Connect() (err error) {
 
 // Set 设置key的值
 func (r *RedisEngine) Set(key string, value interface{}) (err error) {
-	err = r.db.Set(r.ctx, key, value, 0).Err()
+	var cv []byte
+	cv, err = json.Marshal(value)
+	if err != nil {
+		return
+	}
+	err = r.db.Set(r.ctx, key, cv, 0).Err()
 	return
 }
 
 // SetEX 设置key的值并指定过期时间
 func (r *RedisEngine) SetEX(key string, value interface{}, expiration time.Duration) (err error) {
-	err = r.db.Set(r.ctx, key, value, expiration).Err()
+	var cv []byte
+	cv, err = json.Marshal(value)
+	if err != nil {
+		return
+	}
+	err = r.db.Set(r.ctx, key, cv, expiration).Err()
 	return
 }
 

@@ -38,20 +38,29 @@ func TestHSet(t *testing.T) {
 		fmt.Println("error:", er.Error())
 	}
 	fmt.Println(string(mu))
-	err := cache.Redis().HSet("ks1", "k1", "1", "k2", "2", "k3", "3")
+	err := cache.Redis().HSet("ks1", "k1", "1", "k2", "2", "k3", mu)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	//
+	// err1 := cache.Redis().Set("vs1", mu)
+	// if err1 != nil {
+	// 	fmt.Println(err1.Error())
+	// }
+	// u := User{
+	// 	Name: fmt.Sprintf("name%v", 222),
+	// 	Age:  0,
+	// }
+	// err2 := cache.Redis().Set("vs1111", "ddddd")
+	// if err2 != nil {
+	// 	fmt.Println(err2.Error())
+	// }
 
-	err1 := cache.Redis().Set("vs1", mu)
-	if err1 != nil {
-		fmt.Println(err1.Error())
-	}
 }
 
 func install() error {
 	redisCnf := &cache.Config{
-		Address:       "127.0.0.1:9999",
+		Address:       ":9999",
 		Db:            0,
 		User:          "",
 		Pass:          "sowell@123",

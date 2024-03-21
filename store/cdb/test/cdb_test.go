@@ -16,7 +16,7 @@ func install() {
 	df := &cdb.DbCnf{
 		Alias:           "t1",
 		Driver:          "postgres",
-		Link:            "postgres://postgres:clm@2023@150.158.46.32:5433/dbtest?sslmode=disable",
+		Link:            "postgres://postgres:clm@2023@150.158.46.32:51433/dbtest?sslmode=disable",
 		ShowSql:         true,
 		LogLevel:        0,
 		ConnMaxLifeTime: 0,
@@ -29,7 +29,7 @@ func install() {
 	df1 := &cdb.DbCnf{
 		Alias:           "t2",
 		Driver:          "postgres",
-		Link:            "postgres://postgres:clm@2023@150.158.46.32:5433/dbtest1?sslmode=disable",
+		Link:            "postgres://postgres:clm@2023@150.158.46.32:51433/dbtest1?sslmode=disable",
 		ShowSql:         true,
 		LogLevel:        0,
 		ConnMaxLifeTime: 0,

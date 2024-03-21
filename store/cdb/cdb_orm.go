@@ -68,19 +68,25 @@ func Install() {
 	dbEngine = make(map[string]*DbEngine)
 	for k, v := range dbCnfs {
 		r := &rotation.RoundRotationBalance{}
+		dbStatus := false
 		for _k, _v := range v.DbCnnf {
-			if _v.Role == Master || _v.Role == Slave {
-				r.Add(_k)
-			}
 			db := createDb(_v)
-			de := &DbEngine{
-				alias:  _k,
-				engine: db,
-				role:   _v.Role,
+			if db != nil {
+				dbStatus = true
+				if _v.Role == Master || _v.Role == Slave {
+					r.Add(_k)
+				}
+				de := &DbEngine{
+					alias:  _k,
+					engine: db,
+					role:   _v.Role,
+				}
+				dbEngine[_k] = de
 			}
-			dbEngine[_k] = de
 		}
-		lbs[k] = r
+		if dbStatus {
+			lbs[k] = r
+		}
 	}
 }
 
@@ -99,6 +105,11 @@ func createDb(cnf *DbCnf) *xorm.Engine {
 	// 设置缓存
 	// cacher := caches.NewLRUCacher(caches.NewMemoryStore(), 1000)
 	// db.SetDefaultCacher(cacher)
+	// 连接测试
+	err = db.Ping()
+	if err != nil {
+		db = nil
+	}
 	return db
 }
 

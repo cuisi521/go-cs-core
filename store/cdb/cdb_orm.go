@@ -106,9 +106,11 @@ func createDb(cnf *DbCnf) *xorm.Engine {
 	// cacher := caches.NewLRUCacher(caches.NewMemoryStore(), 1000)
 	// db.SetDefaultCacher(cacher)
 	// 连接测试
-	err = db.Ping()
-	if err != nil {
-		db = nil
+	if db != nil {
+		err = db.Ping()
+		if err != nil {
+			db = nil
+		}
 	}
 	return db
 }

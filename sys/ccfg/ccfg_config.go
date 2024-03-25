@@ -22,6 +22,7 @@ type Config struct {
 	Database map[string]map[string]DbCnf `mapstructure:"database"`
 	Cache    CacheCnf                    `mapstructure:"cache"`
 	Token    TokenCnf                    `mapstructure:"token"`
+	Ppt      PptCnf                      `mapstructure:"ppt"`
 }
 
 // ServerCnf 服务配置

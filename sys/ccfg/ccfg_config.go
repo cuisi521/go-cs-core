@@ -140,6 +140,10 @@ type TokenCnf struct {
 	MaxRefresh   int64  `mapstructure:"maxRefresh"`
 }
 
+type PptCnf struct {
+	FileServer int `mapstructure:"fileServer"`
+}
+
 func SysCnf() *Config {
 	return cnf
 }

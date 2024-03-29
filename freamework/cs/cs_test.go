@@ -18,3 +18,14 @@ func TestLog(t *testing.T) {
 	clog.Install()
 	Log().Infof("sssssss%s", "vvvv")
 }
+
+func TestGetType(t *testing.T) {
+	ts := []byte("sssss")
+	vs := tStruct{Id: "888888"}
+	GetType(ts)
+	GetType(vs)
+}
+
+type tStruct struct {
+	Id string
+}

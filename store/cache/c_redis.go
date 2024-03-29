@@ -113,6 +113,7 @@ func (r *RedisEngine) GetOrSetFuncLock(key string, callBack Func, expiration tim
 		if err != nil {
 			return
 		}
+
 		if byteValue, ok := result.([]byte); ok {
 			_, err = r.db.SetNX(r.ctx, key, byteValue, expiration).Result()
 		} else {

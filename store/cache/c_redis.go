@@ -7,7 +7,6 @@ package cache
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -114,21 +113,21 @@ func (r *RedisEngine) GetOrSetFuncLock(key string, callBack Func, expiration tim
 		if err != nil {
 			return
 		}
-		t := reflect.TypeOf(result)
-		var cv []byte
-		// 根据类型判断
-		if t.Kind() == reflect.Slice && t.Elem().Kind() == reflect.Uint8 {
-			cv = result.([]byte)
-		} else if t.Kind() == reflect.String {
-			cv = result.([]byte)
-		} else if t.Kind() == reflect.Interface {
-
-		} else if t.Kind() == reflect.Struct {
-			cv, err = json.Marshal(result)
-		} else {
-			cv = result.([]byte)
-		}
-		_, err = r.db.SetNX(r.ctx, key, cv, expiration).Result()
+		// t := reflect.TypeOf(result)
+		// var cv []byte
+		// // 根据类型判断
+		// if t.Kind() == reflect.Slice && t.Elem().Kind() == reflect.Uint8 {
+		// 	cv = result.([]byte)
+		// } else if t.Kind() == reflect.String {
+		// 	cv = result.([]byte)
+		// } else if t.Kind() == reflect.Interface {
+		//
+		// } else if t.Kind() == reflect.Struct {
+		// 	cv, err = json.Marshal(result)
+		// } else {
+		// 	cv = result.([]byte)
+		// }
+		_, err = r.db.SetNX(r.ctx, key, result, expiration).Result()
 	}
 	return
 }

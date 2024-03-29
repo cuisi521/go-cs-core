@@ -5,6 +5,7 @@
 package cs
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/cuisi521/go-cs-core/sys/clog"
@@ -20,10 +21,13 @@ func TestLog(t *testing.T) {
 }
 
 func TestGetType(t *testing.T) {
-	ts := []byte("sssss")
+	var ts interface{}
+	ts = []byte("sssss")
 	vs := tStruct{Id: "888888"}
-	GetType(ts)
-	GetType(vs)
+	v1 := GetType(ts)
+	v2 := GetType(vs)
+	fmt.Println(v1)
+	fmt.Println(v2)
 }
 
 type tStruct struct {

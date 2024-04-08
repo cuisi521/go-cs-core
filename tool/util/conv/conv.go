@@ -7,6 +7,8 @@ package conv
 import (
 	"strconv"
 	"time"
+
+	"github.com/cuisi521/go-cs-core/tool/json"
 )
 
 // Int converts 'i' to int
@@ -148,4 +150,27 @@ func Str(i interface{}) string {
 	default:
 		return ""
 	}
+}
+
+// checkJsonAndUnmarshalUseNumber checks if given `any` is JSON formatted string value and does converting using `json.UnmarshalUseNumber`.
+func checkJsonAndUnmarshalUseNumber(any interface{}, target interface{}) bool {
+	switch r := any.(type) {
+	case []byte:
+		if json.Valid(r) {
+			if err := json.UnmarshalUseNumber(r, &target); err != nil {
+				return false
+			}
+			return true
+		}
+
+	case string:
+		anyAsBytes := []byte(r)
+		if json.Valid(anyAsBytes) {
+			if err := json.UnmarshalUseNumber(anyAsBytes, &target); err != nil {
+				return false
+			}
+			return true
+		}
+	}
+	return false
 }

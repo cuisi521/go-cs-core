@@ -58,10 +58,21 @@ func TestHSet(t *testing.T) {
 
 }
 
+func TestSet(t *testing.T) {
+	install()
+	// cache.Redis().Set("t1", "123")
+	err := cache.Redis().Del("t1")
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println("success")
+	}
+}
+
 func install() error {
 	redisCnf := &cache.Config{
-		Address:       ":9999",
-		Db:            0,
+		Address:       "120.27.203.171:9999",
+		Db:            2,
 		User:          "",
 		Pass:          "sowell@123",
 		ReadTimeout:   time.Second * 3,

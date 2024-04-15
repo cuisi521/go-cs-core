@@ -12,11 +12,11 @@ import (
 
 // SliceStr is alias of Strings.
 func SliceStr(any interface{}) []string {
-	return Strings(any)
+	return Strs(any)
 }
 
-// Strings converts `any` to []string.
-func Strings(any interface{}) []string {
+// Strs converts `any` to []string.
+func Strs(any interface{}) []string {
 	if any == nil {
 		return nil
 	}
@@ -113,7 +113,7 @@ func Strings(any interface{}) []string {
 		return v.Strings()
 	}
 	if v, ok := any.(iInterfaces); ok {
-		return Strings(v.Interfaces())
+		return Strs(v.Interfaces())
 	}
 	// JSON format string value converting.
 	if checkJsonAndUnmarshalUseNumber(any, &array) {

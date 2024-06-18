@@ -33,3 +33,22 @@ func TestGetType(t *testing.T) {
 type tStruct struct {
 	Id string
 }
+
+// 测试http get请求
+// 请求方式：go test -v -run="TestHttpGet"
+func TestHttpGet(t *testing.T) {
+
+	c := Client()
+	c.SetHeader("Authorization", "test")
+	resp, err := c.Get("http://localhost:8001/api/v1/dc/dataCenter/get", nil)
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		result := resp.ReadAllString()
+		fmt.Println("result:", result)
+	}
+	defer func() {
+		resp.Close()
+	}()
+
+}

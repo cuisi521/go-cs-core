@@ -3,8 +3,6 @@ package client
 import (
 	"io"
 	"net/http"
-
-	"github.com/cuisi521/go-cs-core/freamework/cs"
 )
 
 type Response struct {
@@ -20,7 +18,6 @@ func (r *Response) ReadAll() []byte {
 
 	body, err := io.ReadAll(r.Response.Body)
 	if err != nil {
-		cs.Log().Error(r.request.Context(), `%+v`, err)
 		return nil
 	}
 	return body

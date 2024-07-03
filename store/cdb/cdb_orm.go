@@ -7,10 +7,9 @@ package cdb
 import (
 	"fmt"
 
-	"github.com/xormplus/xorm"
+	"xorm.io/xorm"
 
 	"github.com/cuisi521/go-cs-core/sys/clog"
-	"github.com/cuisi521/go-cs-core/tool/clb/rotation"
 )
 
 const (
@@ -21,13 +20,14 @@ const (
 
 var (
 	// 数据库引擎
-	dbEngine map[string]*DbEngine
+	dbEngine      map[string]*DbEngine
+	dbEngineGroup map[string]*xorm.EngineGroup
 
 	// 配置信息
 	dbCnfs map[string]*DbCnfs
 
 	// 负载均衡-轮询
-	lbs map[string]*rotation.RoundRotationBalance
+	// lbs map[string]*rotation.RoundRotationBalance
 )
 
 func SetCnf(cnf map[string]*DbCnfs) {
@@ -37,22 +37,44 @@ func SetCnf(cnf map[string]*DbCnfs) {
 // DB 数据库对象
 // d[0]数据库分组,d[1]指定数据库别名
 // @author By Cuisi 2023/12/4 15:48:00
-func DB(d ...string) (xe *xorm.Engine) {
-	var _gp, _db string = DefaultName, DefaultName
-	if len(d) <= 1 {
-		// 判断是否负载均衡
-		if g, ok := lbs[_gp]; ok {
-			if g.Next() != "" {
-				_db = g.Next()
+// func DB(d ...string) (xe *xorm.Engine) {
+// 	var _gp, _db string = DefaultName, DefaultName
+// 	if len(d) <= 1 {
+// 		// 判断是否负载均衡
+// 		if g, ok := lbs[_gp]; ok {
+// 			if g.Next() != "" {
+// 				_db = g.Next()
+// 			}
+// 		}
+// 	} else {
+// 		_gp = d[0]
+// 		_db = d[1]
+// 	}
+// 	if v, ok := dbEngine[_db]; ok {
+// 		fmt.Println(v.alias, v.role)
+// 		return v.engine
+// 	}
+// 	return
+// }
+
+func DB(d ...string) (xe *xorm.EngineGroup) {
+	var (
+		_gp string = DefaultName
+	)
+	if len(d) > 0 {
+		_gp = d[0]
+	}
+
+	if g, ok := dbEngineGroup[_gp]; ok {
+		xe = g
+	} else {
+		for k, v := range dbCnfs {
+			for _, _v := range v.DbCnnf {
+				if _v.Role == Master {
+					_gp = k
+				}
 			}
 		}
-	} else {
-		_gp = d[0]
-		_db = d[1]
-	}
-	if v, ok := dbEngine[_db]; ok {
-		fmt.Println(v.alias, v.role)
-		return v.engine
 	}
 	return
 }
@@ -63,29 +85,71 @@ func GetCnf(k string) (cnf *DbCnfs) {
 
 // Install
 // @author By Cuisi 2023/12/4 17:40:00
+// func Install() {
+// 	lbs = make(map[string]*rotation.RoundRotationBalance)
+// 	dbEngine = make(map[string]*DbEngine)
+// 	for k, v := range dbCnfs {
+// 		r := &rotation.RoundRotationBalance{}
+// 		dbStatus := false
+// 		for _k, _v := range v.DbCnnf {
+// 			db := createDb(_v)
+// 			if db != nil {
+// 				dbStatus = true
+// 				if _v.Role == Master || _v.Role == Slave {
+// 					r.Add(_k)
+// 				}
+// 				de := &DbEngine{
+// 					alias:  _k,
+// 					engine: db,
+// 					role:   _v.Role,
+// 				}
+// 				dbEngine[_k] = de
+// 			}
+// 		}
+// 		if dbStatus {
+// 			lbs[k] = r
+// 		}
+// 	}
+// }
+
 func Install() {
-	lbs = make(map[string]*rotation.RoundRotationBalance)
-	dbEngine = make(map[string]*DbEngine)
+	dbEngineGroup = make(map[string]*xorm.EngineGroup)
 	for k, v := range dbCnfs {
-		r := &rotation.RoundRotationBalance{}
-		dbStatus := false
+		var dbMaster *xorm.Engine
+		var dbSlaves = make([]*xorm.Engine, 0)
 		for _k, _v := range v.DbCnnf {
 			db := createDb(_v)
 			if db != nil {
-				dbStatus = true
-				if _v.Role == Master || _v.Role == Slave {
-					r.Add(_k)
+				dbAlias := k + "$" + _k
+				db.Alias(dbAlias)
+				switch _v.Role {
+				case Master:
+					dbMaster = db
+					dbSlaves = append(dbSlaves, db)
+				case Slave:
+					dbSlaves = append(dbSlaves, db)
+				default:
+					dbMaster = db
 				}
-				de := &DbEngine{
-					alias:  _k,
-					engine: db,
-					role:   _v.Role,
-				}
-				dbEngine[_k] = de
 			}
 		}
-		if dbStatus {
-			lbs[k] = r
+		if dbMaster == nil {
+			continue
+		}
+		// 策略组,轮训
+		xg, err := xorm.NewEngineGroup(dbMaster, dbSlaves, xorm.RoundRobinPolicy())
+		if err != nil {
+			fmt.Println(err.Error())
+		} else {
+			dbEngineGroup[k] = xg
+		}
+	}
+}
+
+func CloseDb() {
+	for _, v := range dbEngineGroup {
+		if v != nil {
+			v.Close()
 		}
 	}
 }

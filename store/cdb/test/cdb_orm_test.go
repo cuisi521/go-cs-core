@@ -10,7 +10,7 @@ import (
 	"time"
 
 	_ "github.com/lib/pq"
-	"github.com/xormplus/xorm"
+	"xorm.io/xorm"
 )
 
 // 用户表结构
@@ -40,31 +40,6 @@ func (UserClass) TableName() string {
 
 var db *xorm.Engine
 
-func TestDb(t *testing.T) {
-	var err error
-	// 1.创建db引擎
-	db, err = xorm.NewPostgreSQL("postgres://postgres:clm@2023@127.0.0.1:5433/dbtest?sslmode=disable")
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// 2.显示sql语句
-	db.ShowSQL(true)
-
-	// insertObj()
-	// insertExec()
-	isnertExecute()
-	// 4.2.3使用sql配置文件管理语句,两种载入配置的方式LoadSqlMap()和RegisterSqlMap(),以及SqlMapClient()替代SQL()
-	if false {
-		err = db.LoadSqlMap("./sql.xml")
-		// err = db.RegisterSqlMap(xorm.Xml("./","sql.xml"))
-		if err != nil {
-			fmt.Println(err)
-		}
-		db.SqlMapClient("insert_1", "ft7").Execute()
-	}
-
-}
 func insertObj() {
 	// 4.执行插入语句的几种方式
 	// 4.1 orm插入方式:不好控制，如果仅仅插入的对象的属性是name='ftq',那么其他的零值会一同insert，orm方式对零值的处理有点不太好
@@ -84,60 +59,52 @@ func insertExec() {
 	db.Exec(sql, "ft4")
 }
 
-func isnertExecute() {
-	// 4.2.2 db.SQL().Execute():单事务准备了Statement处理sql语句
-	sql := "insert into public.user(name) values(?)"
-	db.SQL(sql, "ft5").Execute()
-
-}
-
-func joinTest() {
-
-}
-
-// 读写分离
-func fz() {
-	var err error
-	master, err := xorm.NewEngine("postgres", "postgres://postgres:root@localhost:5432/test?sslmode=disable")
-	if err != nil {
-		return
-	}
-
-	slave1, err := xorm.NewEngine("postgres", "postgres://postgres:root@localhost:5432/test1?sslmode=disable")
-	if err != nil {
-		return
-	}
-
-	slave2, err := xorm.NewEngine("postgres", "postgres://postgres:root@localhost:5432/test2?sslmode=disable")
-	if err != nil {
-		return
-	}
-
-	slaves := []*xorm.Engine{slave1, slave2}
-	masters := []*xorm.Engine{master, slave2}
-	eg, err := xorm.NewEngineGroup(masters, slaves)
-	eg.DB()
-}
-
 func TestZc(t *testing.T) {
+	fmt.Println("测试开始。。。")
 	var err error
-	master, err := xorm.NewEngine("postgres", "postgres://postgres:clm@2023@150.158.46.32:5433/dbtest?sslmode=disable")
+	master, err := xorm.NewEngine("postgres", "postgres://postgres:redmoon@127.0.0.1:5432/dbtest?sslmode=disable")
 	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
+	// master.ShowSQL(true)
 
-	slave1, err := xorm.NewEngine("postgres", "postgres://postgres:clm@2023@150.158.46.32:5433/dbtest?sslmode=disable")
+	slave1, err := xorm.NewEngine("postgres", "postgres://postgres:redmoon@127.0.0.1:5432/dbtest1?sslmode=disable")
 	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
+	// slave1.ShowSQL(true)
 
-	slave2, err := xorm.NewEngine("postgres", "postgres://postgres:clm@2023@150.158.46.32:5433/dbtest?sslmode=disable")
+	slave2, err := xorm.NewEngine("postgres", "postgres://postgres:redmoon@127.0.0.1:5432/dbtest2?sslmode=disable")
 	if err != nil {
+		fmt.Println(err.Error())
 		return
 	}
+	// slave2.ShowSQL(true)
 
-	slaves := []*xorm.Engine{slave1, slave2}
-	eg, err := xorm.NewEngineGroup(master, slaves)
-	fmt.Println(eg)
+	slaves := []*xorm.Engine{master, slave1, slave2}
+	xg, err := xorm.NewEngineGroup(master, slaves)
+	xg.SetPolicy(xorm.RoundRobinPolicy())
+
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+	t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
+
+	// sqlStr := `select * from sys_logininfor`
+	// for i := 0; i < 10; i++ {
+	// 	result := xg.QueryRe(sqlStr)
+	// 	fmt.Println("len:", len(result.Result))
+	// }
+
+	defer xg.Close()
 
 }

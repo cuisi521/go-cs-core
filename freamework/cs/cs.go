@@ -5,7 +5,7 @@
 package cs
 
 import (
-	"github.com/xormplus/xorm"
+	"xorm.io/xorm"
 
 	"github.com/cuisi521/go-cs-core/store/cache"
 	"github.com/cuisi521/go-cs-core/store/cdb"

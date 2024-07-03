@@ -15,7 +15,7 @@ import (
 )
 
 // DB 返回数据库xorm的对象
-func DB(name ...string) *xorm.Engine {
+func DB(name ...string) *xorm.EngineGroup {
 	return cdb.DB(name...)
 }
 

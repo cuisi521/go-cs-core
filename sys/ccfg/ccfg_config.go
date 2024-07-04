@@ -105,6 +105,9 @@ type DbCnf struct {
 
 	// (单位秒)连接对象可重复使用的时间长度
 	MaxLifetime time.Duration `mapstructure:"maxLifetime"`
+
+	// 角色(Master|Slave)
+	Role string `mapstructure:"role"`
 }
 
 // CacheCnf 缓存配置

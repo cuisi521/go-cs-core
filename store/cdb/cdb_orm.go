@@ -125,7 +125,7 @@ func Install() {
 				switch _v.Role {
 				case Master:
 					dbMaster = db
-					dbSlaves = append(dbSlaves, db)
+					// dbSlaves = append(dbSlaves, db)
 				case Slave:
 					dbSlaves = append(dbSlaves, db)
 				default:

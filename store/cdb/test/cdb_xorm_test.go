@@ -50,18 +50,20 @@ func TestZcs(t *testing.T) {
 	// t.Log("[xg.Slave():\n", xg.Slave().DataSourceName())
 
 	// sqlStr := `select * from sys_logininfor`
-	// for i := 0; i < 10; i++ {
-	// 	result, _ := xg.Query(sqlStr)
-	// 	fmt.Println("len:", len(result))
-	// }
 	for i := 0; i < 10; i++ {
-		_, err := xg.Exec(`insert into sys_logininfor("msg") values(?)`, i)
-		if err != nil {
-			fmt.Println(err.Error())
-		} else {
-			fmt.Println("success")
-		}
+		var dataList []SysLogininfor
+		xg.Find(&dataList)
+		fmt.Println("len:", len(dataList))
 	}
+	//
+	// for i := 0; i < 10; i++ {
+	// 	_, err := xg.Exec(`insert into sys_logininfor("msg") values(?)`, i)
+	// 	if err != nil {
+	// 		fmt.Println(err.Error())
+	// 	} else {
+	// 		fmt.Println("success")
+	// 	}
+	// }
 	defer xg.Close()
 
 }
@@ -69,46 +71,11 @@ func TestZcs(t *testing.T) {
 func TestFzReg(t *testing.T) {
 	_install()
 	cdb.Install()
-	sqlStr := fmt.Sprintf(`SELECT DISTINCT ON (a.attname) a.attname AS column_name,
-										pg_catalog.format_type(a.atttypid, a.atttypmod) AS data_type,
-										pg_catalog.col_description(a.attrelid, a.attnum) AS description,
-										CASE
-											WHEN i.indisprimary THEN 'PRIMARY KEY'
-											WHEN pg_indexes.indexdef LIKE '%s' || a.attname || '%s' THEN 'HAS INDEX'
-											ELSE ''
-										END AS key_or_index
-									FROM
-										pg_catalog.pg_attribute a
-										JOIN pg_catalog.pg_class c ON a.attrelid = c.oid
-										LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-										LEFT JOIN pg_catalog.pg_index i ON i.indrelid = a.attrelid AND a.attnum = ANY(i.indkey)
-										LEFT JOIN pg_indexes ON pg_indexes.tablename = c.relname AND pg_indexes.schemaname = n.nspname
-									WHERE
-										c.relname = '%s' -- 表名
-										AND a.attnum > 0
-										AND NOT a.attisdropped
-										AND n.nspname = 'public' -- 如果表在 public schema
-									ORDER BY
-										a.attname,
-										CASE
-											WHEN i.indisprimary THEN 0
-											WHEN pg_indexes.indexdef LIKE '%s' || a.attname || '%s' THEN 1
-											ELSE 2
-										END;`, "%", "%", "sys_logininfor", "%", "%")
-	resultMap, err := cdb.DB().Query(sqlStr)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	for _, v := range resultMap {
-		// fmt.Println("======", k, v)
-		if value, ok := v["column_name"]; ok {
-			ColumnName := string(value)
-			fmt.Println("ColumnName:", ColumnName)
-		}
-		if value, ok := v["description"]; ok {
-			ColumnComment := string(value)
-			fmt.Println("ColumnComment:", ColumnComment)
-		}
+	sqlStr := `select * from sys_logininfor`
+	for i := 0; i < 10; i++ {
+		result, _ := cdb.DB().Query(sqlStr)
+		cdb.DB().Slave()
+		fmt.Println("len:", len(result))
 	}
 
 	// for i := 0; i < 10; i++ {
@@ -186,3 +153,5 @@ type SysLogininfor struct {
 	Module     string    `xorm:"Varchar(35) 'module' comment('登录模块')" json:"module" description:"登录模块"`
 	Browser    string    `xorm:"Varchar(60) 'browser' comment('浏览器')" json:"browser" description:"浏览器"`
 }
+
+// func (*SysLogininfor) TableName() string { return "sys_logininfor" }
